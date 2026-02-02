@@ -1,0 +1,14 @@
+{
+  "name": "github-manager",
+  "version": "1.0.0",
+  "description": "MCP Server for GitHub Branch Management",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.6.0",
+    "zod": "^3.22.4"
+  }
+}
