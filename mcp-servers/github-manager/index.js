@@ -57,6 +57,16 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           })
         ),
       },
+      {
+        name: "get_diff",
+        description: "Get the git diff between two branches or commits",
+        inputSchema: zodSchemaToToolSchema(
+          z.object({
+            target: z.string().describe("The target branch/commit (e.g., main)"),
+            source: z.string().describe("The source branch/commit (e.g., feature/login)"),
+          })
+        ),
+      },
     ],
   };
 });
@@ -93,6 +103,18 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           {
             type: "text",
             text: `Successfully created and switched to branch '${branchName}'\n${output}`,
+          },
+        ],
+      };
+    }
+
+    if (name === "get_diff") {
+      const output = await runGitCommand(`git diff ${args.target}...${args.source}`);
+      return {
+        content: [
+          {
+            type: "text",
+            text: output || "No changes detected.",
           },
         ],
       };
