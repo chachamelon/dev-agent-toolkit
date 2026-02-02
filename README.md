@@ -48,7 +48,7 @@ graph TD
         
         subgraph "Dev Cycle (Repeat for Sub-tasks)"
             Git -.->|8. Create Task Branch| Code[Coding]
-            Code -->|9. Agent Self-Review (get_diff)| Code
+            Code -->|"9. Agent Self-Review (get_diff)"| Code
             Code -->|10. Merge to Epic Branch| Git
         end
     end
