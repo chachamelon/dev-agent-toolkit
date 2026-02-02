@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  linear-manager:
+    build: .
+    command: node mcp-servers/linear-manager/index.js
+    working_dir: /app
+    volumes:
+      - ./mcp-servers/linear-manager/.env:/app/mcp-servers/linear-manager/.env
+    stdin_open: true # Required for MCP stdio
+    tty: true        # Required for MCP stdio
+    environment:
+      - LINEAR_API_KEY=${LINEAR_API_KEY}
+      - LINEAR_DEFAULT_TEAM_ID=${LINEAR_DEFAULT_TEAM_ID}
+
+  github-manager:
+    build: .
+    command: node mcp-servers/github-manager/index.js
+    working_dir: /repo # Run commands in the mounted repo
+    volumes:
+      - .:/repo # Mount current host directory to container
+    stdin_open: true
+    tty: true
+    # Git config might be needed inside container
+    environment:
+      - GIT_AUTHOR_NAME=AI Agent
+      - GIT_AUTHOR_EMAIL=ai-agent@example.com
+
+  ssh-manager:
+    build: .
+    command: node mcp-servers/ssh-manager/index.js
+    working_dir: /app
+    volumes:
+      - ./mcp-servers/ssh-manager/.env:/app/mcp-servers/ssh-manager/.env
+      # Mount SSH keys from host (Change path as needed)
+      # Windows: C:/Users/User/.ssh -> /root/.ssh
+      # Mac/Linux: ~/.ssh -> /root/.ssh
+      - ${HOME}/.ssh:/root/.ssh:ro 
+    stdin_open: true
+    tty: true
+
+# Note: You need to create a .env file in project root to feed variables into compose
+# or ensure the individual .env files are mounted correctly.
