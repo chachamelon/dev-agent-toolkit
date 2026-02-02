@@ -29,6 +29,39 @@ Defines the "Hands" of the agent. Node.js-based Model Context Protocol servers.
   - Safe commands (`docker logs`, `tail`, `ls`) only.
   - Env: `SSH_HOST`, `SSH_KEY_PATH`, etc.
 
+## 🔄 Workflow Diagram
+
+```mermaid
+graph TD
+    User([User]) -->|1. Request Feature| AI[AI Agent]
+
+    subgraph "Phase 1: Planning (Brain)"
+        AI -->|2. Scan Context & Team| Context{Context}
+        AI -->|3. Create Epic & Sub-issues| Linear[Linear]
+        Linear -->|4. Plan Created| AI
+        AI -->|5. ✋ Request Approval| User
+    end
+
+    subgraph "Phase 2: Development (Hands)"
+        User -->|6. Approve| AI
+        AI -->|7. Create Epic Branch| Git[Git / Local]
+        
+        subgraph "Dev Cycle (Repeat for Sub-tasks)"
+            Git -.->|8. Create Task Branch| Code[Coding]
+            Code -->|9. Agent Self-Review (get_diff)| Code
+            Code -->|10. Merge to Epic Branch| Git
+        end
+    end
+
+    subgraph "Phase 3: Review & Close"
+        Git -->|11. Run Tests & Report| AI
+        AI -->|12. ✋ Request Final Review| User
+        User -->|13. Approve Merge| AI
+        AI -->|14. Merge to Main| Git
+        AI -->|15. Update Status: Done| Linear
+    end
+```
+
 ## 🚀 Getting Started
 
 ### 1. Installation
