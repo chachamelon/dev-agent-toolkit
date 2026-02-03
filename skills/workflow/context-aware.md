@@ -1,47 +1,21 @@
 # Project Context Awareness Guide
 
-This guide instructs the AI agent on how to adapt to the specific conventions, technology stack, and style of any given project **before** writing code.
+## 1. Discovery Phase
+- **Config Scan**: Read `package.json`, `.eslintrc`, `.gitignore`, `go.mod`, etc.
+- **Style Scan**: Check indentation (spaces vs tabs), naming (camelCase vs snake_case).
+- **Architecture**: Read `README.md` and `.project-context.md`.
 
-## 1. Discovery Phase (Scan First)
-**Goal:** Understand the "Law of the Land" (local conventions) before making changes.
-
-- **Check Configuration Files:**
-  - `package.json`, `pyproject.toml`, `Cargo.toml`: Identify languages, frameworks, and dependencies.
-  - `.eslintrc`, `.prettierrc`, `tslint.json`, `.pylintrc`: Understand coding style and linting rules.
-  - `.editorconfig`: Check indentation (spaces vs tabs) and line endings.
-
-- **Check Documentation:**
-  - `README.md`: Read for architectural overview and setup instructions.
-  - `CONTRIBUTING.md`: Look for specific contribution guidelines or commit message formats.
-  - `.ai-rules.md` (or similar): Check for any explicit AI instructions if they exist.
-
-## 2. Style Adaptation (Mimicry)
-**Goal:** Write code that looks like it was written by the existing team.
-
-- **Indentation:** Match the existing indentation (2 spaces, 4 spaces, tabs).
-- **Naming Conventions:**
-  - Verify variable/function naming (camelCase, snake_case, PascalCase) by reading existing source files.
-- **Project Structure:**
-  - Place files in directories that match the existing pattern (e.g., `src/components`, `tests/unit`).
+## 2. Style Calibration (Mandatory Report)
+- **Calibration Rule**: Before writing the first line of code, provide a **Calibration Report** to the user:
+  > "I have analyzed the project context. I will follow:
+  > - Indentation: 2 spaces
+  > - Naming: camelCase for variables, PascalCase for components
+  > - CSS: Tailwind Utility classes
+  > **Does this match your expectations?**"
 
 ## 3. Technology Alignment
-**Goal:** Use available tools, do not introduce new ones arbitrarily.
+- **No New Tools**: Use existing libraries (e.g., use `axios` if present, don't add `fetch`).
+- **File Placement**: Follow existing folder structures (e.g., `src/components`).
 
-- **Libraries:** Use existing dependencies found in `package.json` (e.g., if `axios` is installed, don't use `node-fetch`).
-- **Test Framework:** Use the established test runner (Jest, Mocha, PyTest) found in configuration.
-
-## 4. Deployment Awareness
-**Goal:** Recognize how the code is shipped to production.
-
-- **Check for CI/CD Configs:**
-  - `.github/workflows/*.yml`: GitHub Actions.
-  - `.gitlab-ci.yml`: GitLab CI.
-  - `vercel.json` / `netlify.toml`: Cloud Platform deployment.
-  - `Dockerfile` / `docker-compose.yml`: Containerized environment.
-
-- **Action:**
-  - If CD config exists, assume **Auto-Deployment** upon merge.
-  - Notify the user: "Changes merged. Deployment should start automatically via [System Name]."
-
-## 5. Execution Rule
-- **Always read at least one related file** in the codebase to "calibrate" your style before creating a new file.
+## 4. Execution Rule
+- **Read-to-Calibrate**: Read at least one similar file before creating or modifying code to ensure perfect mimicry.

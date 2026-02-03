@@ -1,25 +1,29 @@
 # Development Guide
 **Role:** Software Engineer
-**Goal:** Implement features safely and efficiently using Git and Code.
+**Goal:** Implement features safely with strict version control and security.
 
-## 1. Branching Strategy (Epic Branch Workflow)
-**Goal:** Manage complex features with a single final review.
+## 1. Branching Strategy
+- **Base Branch**: Always start from a clean, updated `main`.
+- **Naming**:
+  - `feature/description` (e.g., `feature/login-ui`)
+  - `fix/description` (e.g., `fix/api-timeout`)
+- **Status**: Update Linear issue to **In Progress** immediately after branching.
 
-- **Structure:**
-  1.  **Feature Branch:** Create a branch for the feature (e.g., `feature/login`).
-  2.  **Atomic Commits:** Push commits frequently as per `planning.md` strategy.
-  3.  **Merge Flow:**
-      - `Feature Branch` -> (Review & PR) -> `Main`
-      - **NO** separate Epic/Task sub-branches unless extremely complex.
+## 2. Security & Environment (CRITICAL)
+- **No Secrets**: NEVER hardcode API keys, tokens, or passwords.
+- **Environment**: If a new secret is needed:
+  1. Add it to `.env` (locally).
+  2. Update `.env.example` with the new key name (empty value).
+  3. Verify `.gitignore` covers `.env`.
 
-- **Naming Convention:**
-  - **Feature:** `feature/description` (e.g., `feature/signup`)
-  - **Fix:** `fix/description` (e.g., `fix/api-error`)
-  - **Refactor:** `refactor/description` (e.g., `refactor/cleanup`)
+## 3. Atomic Implementation & Commits
+- **Frequency**: Commit and Push **immediately** after each atomic task passes tests.
+- **Conventional Commits**:
+  - `feat(scope): description`
+  - `fix(scope): description`
+  - `refactor(scope): description`
+- **Real-time Progress**: The user should see incremental progress on GitHub.
 
-## 2. Context Awareness
-- **Rule:** Before writing code, always scan the project context (as defined in `context-aware.md`) to respect existing styles and conventions.
-
-## 3. Status Tracking
-- **Linear Status:**
-  - Update issue status to **In Progress** immediately after creating the branch.
+## 4. Execution Rule
+- **TDD (Optional but Recommended)**: Create tests before logic for complex utilities.
+- **Validation**: Run project-specific build/lint commands before every commit.

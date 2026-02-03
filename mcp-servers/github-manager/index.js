@@ -8,7 +8,14 @@ import {
 import { z } from "zod";
 import { exec } from "child_process";
 import { promisify } from "util";
-import "dotenv/config";
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Load environment variables from .env file in the same directory
+dotenv.config({ path: path.join(__dirname, ".env") });
 
 const execAsync = promisify(exec);
 

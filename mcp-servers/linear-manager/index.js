@@ -8,9 +8,13 @@ import {
 import { z } from "zod";
 import { LinearClient } from "@linear/sdk";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
-// Load environment variables from .env file
-dotenv.config();
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Load environment variables from .env file in the same directory
+dotenv.config({ path: path.join(__dirname, ".env") });
 
 // Initialize Linear Client
 // User must provide LINEAR_API_KEY in environment variables
@@ -112,7 +116,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     if (name === "list_teams") {
       const teams = await linearClient.teams();
       const teamList = teams.nodes.map(t => `[${t.name}] ID: ${t.id}`).join("\n");
-      
+
       return {
         content: [
           {
@@ -142,7 +146,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const team = await linearClient.team(teamId);
       const labels = await team.labels();
       const labelList = labels.nodes.map(l => `[${l.name}] ID: ${l.id}`).join("\n");
-      
+
       return {
         content: [
           {
@@ -188,7 +192,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const team = await linearClient.team(teamId);
       const states = await team.states();
       const stateList = states.nodes.map(s => `[${s.name}] ID: ${s.id} (Type: ${s.type})`).join("\n");
-      
+
       return {
         content: [
           {
@@ -202,20 +206,20 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     if (name === "update_issue") {
       const issue = await linearClient.issue(args.issueId);
       const updatePayload = await issue.update({
-          stateId: args.stateId,
-          assigneeId: args.assigneeId
+        stateId: args.stateId,
+        assigneeId: args.assigneeId
       });
 
       const success = await updatePayload.success;
 
       return {
-          content: [
-            {
-              type: "text",
-              text: success ? `Successfully updated issue ${args.issueId}` : `Failed to update issue ${args.issueId}`,
-            },
-          ],
-        };
+        content: [
+          {
+            type: "text",
+            text: success ? `Successfully updated issue ${args.issueId}` : `Failed to update issue ${args.issueId}`,
+          },
+        ],
+      };
     }
 
     throw new Error(`Unknown tool: ${name}`);
@@ -238,22 +242,22 @@ function zodSchemaToToolSchema(zodObj) {
     type: "object",
     properties: {},
   };
-  
+
   for (const [key, value] of Object.entries(zodObj.shape)) {
     let type = "string";
     if (value instanceof z.ZodNumber) type = "number";
     if (value instanceof z.ZodArray) type = "array";
 
     schema.properties[key] = {
-        type: type,
-        description: value.description,
+      type: type,
+      description: value.description,
     };
-    
+
     if (type === "array") {
-        schema.properties[key].items = { type: "string" };
+      schema.properties[key].items = { type: "string" };
     }
   }
-  
+
   return schema;
 }
 

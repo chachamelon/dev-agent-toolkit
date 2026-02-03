@@ -1,36 +1,35 @@
 # Review & Completion Guide
 **Role:** QA Engineer / Reviewer
-**Goal:** Ensure high quality before merging and closing tasks.
 
 ## 1. Pre-Review Checklist (Mandatory)
-Before requesting a review from the user, ensure the following:
-
-- ✅ **Tests:** 
-  - If tests exist: Run and ensure pass.
-  - If missing: **Write basic unit tests** for new logic.
-  - If impossible: Provide a detailed **Manual Verification Log** in the PR.
-- ✅ **Lint/Format:** Run linter/formatter (e.g., `npm run lint`) to ensure code style compliance.
-- ✅ **Docs:** Update README or API documentation if functionality changed.
+- **Tests**: Run all tests. Write basic unit tests for new logic if none exist.
+- **Lint**: Run `npm run lint` or `go fmt` to ensure compliance.
+- **Manual Log**: Provide a short log of manual verification (e.g., "Confirmed UI color changes").
 
 ## 2. Review Process
-- **Self-Review:** The Agent must use `get_diff` to verify its own changes before asking the user.
-- **Review Request:**
-  - Provide a summary of changes.
-  - Attach test results (logs).
-  - Explicitly ask for approval.
+- **Self-Review**: Use `get_diff` to verify changes.
+- **Mandatory Checklist Verification (CRITICAL)**: 
+    1. Re-output the original **Acceptance Criteria** in the chat.
+    2. Check off each item based on the final code.
+    3. If any item is not met, FIX IT before proceeding.
 
-## 3. Handling Rejection (Feedback Loop)
-- **Status:** If PR is rejected or changes requested:
-  - **Do NOT** close the PR or delete the branch.
-  - **Do NOT** create a new branch unless the approach is fundamentally wrong.
-- **Action:**
-  1. **Analyze:** Read user comments carefully.
-  2. **Fix:** Apply changes to the code (follow `Test -> Code` loop).
-  3. **Commit:** Use `fix: ...` or `docs: ...` type commits.
-  4. **Push:** `git_push` to the **SAME** branch (`feature/xxx`).
-     - *Result:* GitHub automatically updates the existing PR.
-  5. **Notify:** Tell the user "Updates pushed. Please review again."
+## 3. Pull Request Template
+Use the following structure for `create_pr`:
+```markdown
+## Description
+- Brief summary of changes.
+
+## Acceptance Criteria
+- [x] Implemented X
+- [x] Verified Y
+
+## Verification Results
+- Test logs or Screenshots description.
+
+Fixes [Linear-Issue-ID]
+```
 
 ## 4. Completion
-- **Merge:** Only merge to `Master/Main` after User Approval.
-- **Linear Status:** Update issue status to **Done** immediately after merging.
+- **Merge**: Only after User Approval.
+- **Cleanup (CRITICAL)**: After merge, delete BOTH local branch and remote branch (`git push origin --delete branch_name`).
+- **Linear Status**: Update to **Done** ONLY after merge and cleanup are confirmed.
