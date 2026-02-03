@@ -19,6 +19,18 @@ Before requesting a review from the user, ensure the following:
   - Attach test results (logs).
   - Explicitly ask for approval.
 
-## 3. Completion
+## 3. Handling Rejection (Feedback Loop)
+- **Status:** If PR is rejected or changes requested:
+  - **Do NOT** close the PR or delete the branch.
+  - **Do NOT** create a new branch unless the approach is fundamentally wrong.
+- **Action:**
+  1. **Analyze:** Read user comments carefully.
+  2. **Fix:** Apply changes to the code (follow `Test -> Code` loop).
+  3. **Commit:** Use `fix: ...` or `docs: ...` type commits.
+  4. **Push:** `git_push` to the **SAME** branch (`feature/xxx`).
+     - *Result:* GitHub automatically updates the existing PR.
+  5. **Notify:** Tell the user "Updates pushed. Please review again."
+
+## 4. Completion
 - **Merge:** Only merge to `Master/Main` after User Approval.
 - **Linear Status:** Update issue status to **Done** immediately after merging.
